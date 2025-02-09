@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Editor</title>
-</head>
-<body>
-    <script type="module" src="index.ts"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Code Editor</title>
+    </head>
+    <body>
+        <form id="editor">
+            <label for="command">Command</label>
+            <input type="text" id="command" name="command"/>
+            <button type="submit">Send</button>
+        </form>
+
+        <pre id="output"></pre>
+
+        <script type="module" src="index.ts"></script>
+    </body>
 </html>
