@@ -8,10 +8,16 @@ window.addEventListener("load", async () => {
     const container = await WebContainer.boot();
     console.log("Container booted");
 
-    
+    container.on("server-ready", (port, url) => {
+        if (output) {
+            output.innerText += `Server ready: ${url}:${port}\n`;
+        }
+        document.getElementById("dev-url")?.setAttribute("src", `${url}:${port}`);
+    });
+
     async function run(command: string, args: string[]) {
         const response = await container.spawn(command, args);
-        if (await response.exit) {
+        if (response.exit) {
             console.log("Hurray! You got error");
         }
 
@@ -19,26 +25,26 @@ window.addEventListener("load", async () => {
             new WritableStream({
                 write(chunk) {
                     if (output) {
-                        output.innerText += (chunk + "\n");
+                        output.innerText += chunk + "\n";
                     }
                 },
             })
         );
     }
 
-    // await run("node", ["-v"]);
-    // await run("py", ["-v"]);
-
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!e.target) {return;}
+        if (!e.target) {
+            return;
+        }
         const data = new FormData(e.target as HTMLFormElement);
 
         const text = data.get("command") as string;
         console.log(text);
         const [command, ...args] = (text || "").split(" ");
         await run(command, args);
-    })
+    });
 
+    await run("node", ["-v"]);
 });
